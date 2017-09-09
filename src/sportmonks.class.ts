@@ -17,7 +17,13 @@ export class SportmonksApi {
                 }
                 const body: any[] = [];
                 response.on('data', (chunk) => body.push(chunk));
-                response.on('end', () => resolve( JSON.parse(body.join('')) ));
+                response.on('end', () => {
+                  try {
+                    resolve(JSON.parse(body.join('')));
+                  } catch (err) {
+                    reject(err);
+                  }
+                });
             });
             request.on('error', (err) => reject(err) );
         })
